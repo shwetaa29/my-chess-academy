@@ -1,15 +1,18 @@
 <?php
 session_start();
 
-$envFile = __DIR__ . '/../.env';
+$adminUsername = getenv('ADMIN_USERNAME');
+$adminPassword = getenv('ADMIN_PASSWORD');
 
-if (file_exists($envFile)) {
-    $env = parse_ini_file($envFile);
-    $adminUsername = $env['ADMIN_USERNAME'] ?? '';
-    $adminPassword = $env['ADMIN_PASSWORD'] ?? '';
-} else {
-    $adminUsername = '';
-    $adminPassword = '';
+// For local XAMPP
+if (!$adminUsername || !$adminPassword) {
+    $envFile = __DIR__ . '/../.env';
+
+    if (file_exists($envFile)) {
+        $env = parse_ini_file($envFile);
+        $adminUsername = $env['ADMIN_USERNAME'] ?? '';
+        $adminPassword = $env['ADMIN_PASSWORD'] ?? '';
+    }
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
